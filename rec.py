@@ -11,6 +11,7 @@ prev_entry_datetime = None
 writing = True
 writing_start_magick_words = re.compile("^команда (начни|начать|возобнови|включи)(ть)? запись$")
 writing_stop_magick_words = re.compile("^команда (прекрати|останови|выключи)(ть)? запись$")
+restart_magick_words = re.compile("^команда перезапусти(ть)?$")
 
 def log_time():
     print("### " + datetime.now().strftime("(%H:%M:%S)"))
@@ -67,6 +68,9 @@ def listen_input():
                     writing = True
                     print("### запись возобновлена")
                     continue
+                elif restart_magick_words.match(text):
+                    print("### перезапускаю")
+                    return
                 #[2025-04-05T7:28:00+03:00]
                 if prev_entry_datetime == None: 
                     add_to_txt(datetime.now().strftime("[%Y-%m-%dT%H:%M:%S+03:00]"))
